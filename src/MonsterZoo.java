@@ -1,9 +1,11 @@
-
+import java.util.List;
+import java.util.ArrayList;
 
 public class MonsterZoo {
-	double distance=0.0;//歩いた距離
-	int balls=10;//モンスターを捕まえられるボールの数
-	int fruits=0;//ぶつけるとモンスターが捕まえやすくなるフルーツ
+
+	private Double distance = 0.0;//歩いた距離
+	private Integer balls = 10;//モンスターを捕まえられるボールの数
+	private Integer fruits=0;//ぶつけるとモンスターが捕まえやすくなるフルーツ
 
 	//卵は最大9個まで持てる．卵を取得するとeggにtrueが代入され，
 	//移動するたびに,eggDistanceに1.0kmずつ加算される．
@@ -12,13 +14,18 @@ public class MonsterZoo {
 	boolean egg[] = new boolean[9];
 
 	//ユーザがGetしたモンスター一覧
-	String userMonster[] = new String[100];
+	List<Monster> caughtMonsterList = new ArrayList<Monster>();
+	// String userMonster[] = new String[100];
 
-	//モンスター図鑑．モンスターの名前とレア度(0.0~9.0)がそれぞれの配列に保存されている
-	//レア度が高いほうが捕まえにくい
-	String monsterZukan[] = new String[22];
-	double monsterRare[] = new double[22];
+	private MonsterList monsterList;
+		//モンスター図鑑．モンスターの名前とレア度(0.0~9.0)がそれぞれの配列に保存されている
+		//レア度が高いほうが捕まえにくい
+		// String monsterZukan[] = new String[22];
+		// double monsterRare[] = new double[22];
 
+	public MonsterZoo() {
+		this.monsterList = new MonsterList();
+	}
 	//呼び出すと1km distanceが増える
 	void move(){
 		this.distance++;
@@ -48,8 +55,9 @@ public class MonsterZoo {
 				}
 			}
 		}else if(flg1>=7){
-			int m = (int)(this.monsterZukan.length*Math.random());//monsterZukanからランダムにモンスターを出す
-			System.out.println(this.monsterZukan[m]+"が現れた！");
+			Monster appearedMonster = monsterList.randomFromMonsterList();
+			// int m = (int)(this.monsterZukan.length*Math.random());//monsterZukanからランダムにモンスターを出す
+			System.out.println(appearedMonster.name+"が現れた！");
 			for(int i=0;i<3&&this.balls>0;i++){//捕まえる or 3回ボールを投げるまで繰り返す
 				int r = (int)(6*Math.random());//0~5までの数字をランダムに返す
 				if(this.fruits>0){
@@ -57,34 +65,36 @@ public class MonsterZoo {
 					this.fruits--;
 					r = r * 2;
 				}
-				System.out.println(this.monsterZukan[m]+"にボールを投げた");
+				System.out.println(appearedMonster.name+"にボールを投げた");
 				this.balls--;
-				if(this.monsterRare[m]<=r){//monsterRare[m]の値がr以下の場合
-					System.out.println(this.monsterZukan[m]+"を捕まえた！");
-					for(int j=0;j<userMonster.length;j++){
-						if(this.userMonster[j]==null){
-							this.userMonster[j]=this.monsterZukan[m];
-							break;
-						}
-					}
+				if(appearedMonster.rate <= r){//monsterRare[m]の値がr以下の場合
+					System.out.println(appearedMonster.name+"を捕まえた！");
+					caughtMonsterList.add(appearedMonster);
+					// for(int j=0;j<caughtMonsterList.size();j++){
+					// 	if(this.userMonster[j]==null){
+					// 		this.userMonster[j]=this.monsterZukan[m];
+					// 		break;
+					// 	}
+					// }
 					break;//ボール投げ終了
 				}else{
-					System.out.println(this.monsterZukan[m]+"に逃げられた！");
+					System.out.println(appearedMonster.name+"に逃げられた！");
 				}
 			}
 		}
 		for(int i=0;i<this.egg.length;i++){
 			if(this.egg[i]==true&&this.eggDistance[i]>=3){
 				System.out.println("卵が孵った！");
-				int m = (int)(this.monsterZukan.length*Math.random());
-				System.out.println(this.monsterZukan[m]+"が産まれた！");
-
-				for(int j=0;j<userMonster.length;j++){
-					if(this.userMonster[j]==null){
-						this.userMonster[j]=this.monsterZukan[m];
-						break;
-					}
-				}
+				Monster birthMonster = monsterList.randomFromMonsterList();
+				/* int m = (int)(this.monsterZukan.length*Math.random()); */
+				System.out.println(birthMonster.name+"が産まれた！");
+				caughtMonsterList.add(birthMonster);
+				// for(int j=0;j<userMonster.length;j++){
+				// 	if(this.userMonster[j]==null){
+				// 		this.userMonster[j]=this.monsterZukan[m];
+				// 		break;
+				// 	}
+				// }
 				this.egg[i]=false;
 				this.eggDistance[i]=0.0;
 			}
@@ -103,15 +113,15 @@ public class MonsterZoo {
 		return fruits;
 	}
 
-	public String[] getUserMonster() {
-		return userMonster;
-	}
+	// public String[] getUserMonster() {
+	// 	return userMonster;
+	// }
 
-	public void setMonsterZukan(String[] monsterZukan) {
-		this.monsterZukan = monsterZukan;
-	}
+	// public void setMonsterZukan(String[] monsterZukan) {
+	// 	this.monsterZukan = monsterZukan;
+	// }
 
-	public void setMonsterRare(double[] monsterRare) {
-		this.monsterRare = monsterRare;
-	}
+	// public void setMonsterRare(double[] monsterRare) {
+	// 	this.monsterRare = monsterRare;
+	// }
 }
