@@ -24,6 +24,11 @@ public class MonsterZoo {
 		this.monsterList = new MonsterList();
 	}
 
+	public void turn() {
+			this.move();
+			System.out.println("手持ちのボールは"+this.getBalls()+"個，フルーツは"+this.getFruits()+"個");
+			System.out.println(this.getDistance()+"km歩いた．");
+	}
 	//呼び出すと1km distanceが増える
 	public void move(){
 		this.distance++;
@@ -83,6 +88,11 @@ public class MonsterZoo {
 				this.eggDistance[i]=0.0;
 			}
 		}
+	}
+
+	public void result() {
+		System.out.println("ボールがなくなった！");
+		caughtMonsterList.stream().forEach(m -> System.out.println(m.name+"を捕まえた．"));
 	}
 
 	public double getDistance() {
