@@ -97,15 +97,4 @@ public class MonsterZoo {
 		return fruits;
 	}
 
-	// public String[] getUserMonster() {
-	// 	return userMonster;
-	// }
-
-	// public void setMonsterZukan(String[] monsterZukan) {
-	// 	this.monsterZukan = monsterZukan;
-	// }
-
-	// public void setMonsterRare(double[] monsterRare) {
-	// 	this.monsterRare = monsterRare;
-	// }
 }
