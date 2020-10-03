@@ -15,19 +15,17 @@ public class MonsterZoo {
 
 	//ユーザがGetしたモンスター一覧
 	List<Monster> caughtMonsterList = new ArrayList<Monster>();
-	// String userMonster[] = new String[100];
 
+	//モンスター図鑑．モンスターの名前とレア度(0.0~9.0)がそれぞれの配列に保存されている
+	//レア度が高いほうが捕まえにくい
 	private MonsterList monsterList;
-		//モンスター図鑑．モンスターの名前とレア度(0.0~9.0)がそれぞれの配列に保存されている
-		//レア度が高いほうが捕まえにくい
-		// String monsterZukan[] = new String[22];
-		// double monsterRare[] = new double[22];
 
 	public MonsterZoo() {
 		this.monsterList = new MonsterList();
 	}
+
 	//呼び出すと1km distanceが増える
-	void move(){
+	public void move(){
 		this.distance++;
 		for(int i=0;i<this.egg.length;i++){//卵は移動距離が進むと孵化するため，何km移動したかを更新する
 			if(this.egg[i]==true){
@@ -56,7 +54,6 @@ public class MonsterZoo {
 			}
 		}else if(flg1>=7){
 			Monster appearedMonster = monsterList.randomFromMonsterList();
-			// int m = (int)(this.monsterZukan.length*Math.random());//monsterZukanからランダムにモンスターを出す
 			System.out.println(appearedMonster.name+"が現れた！");
 			for(int i=0;i<3&&this.balls>0;i++){//捕まえる or 3回ボールを投げるまで繰り返す
 				int r = (int)(6*Math.random());//0~5までの数字をランダムに返す
@@ -70,12 +67,6 @@ public class MonsterZoo {
 				if(appearedMonster.rate <= r){//monsterRare[m]の値がr以下の場合
 					System.out.println(appearedMonster.name+"を捕まえた！");
 					caughtMonsterList.add(appearedMonster);
-					// for(int j=0;j<caughtMonsterList.size();j++){
-					// 	if(this.userMonster[j]==null){
-					// 		this.userMonster[j]=this.monsterZukan[m];
-					// 		break;
-					// 	}
-					// }
 					break;//ボール投げ終了
 				}else{
 					System.out.println(appearedMonster.name+"に逃げられた！");
@@ -86,15 +77,8 @@ public class MonsterZoo {
 			if(this.egg[i]==true&&this.eggDistance[i]>=3){
 				System.out.println("卵が孵った！");
 				Monster birthMonster = monsterList.randomFromMonsterList();
-				/* int m = (int)(this.monsterZukan.length*Math.random()); */
 				System.out.println(birthMonster.name+"が産まれた！");
 				caughtMonsterList.add(birthMonster);
-				// for(int j=0;j<userMonster.length;j++){
-				// 	if(this.userMonster[j]==null){
-				// 		this.userMonster[j]=this.monsterZukan[m];
-				// 		break;
-				// 	}
-				// }
 				this.egg[i]=false;
 				this.eggDistance[i]=0.0;
 			}
