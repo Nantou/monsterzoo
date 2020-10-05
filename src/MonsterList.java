@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class MonsterList {
+public final class MonsterList {
     private static ArrayList<Monster> monsterList = new ArrayList<Monster>();
 
     public MonsterList() {
@@ -30,7 +30,7 @@ public class MonsterList {
         this.addMonsterToList("キタバー",new Integer(3));
     }
 
-    public Monster randomFromMonsterList() {
+    public static Monster randomFromMonsterList() {
         Random random = new Random();
         Integer index = random.nextInt(monsterList.size());
         return monsterList.get(index);

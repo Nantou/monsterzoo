@@ -10,33 +10,27 @@ public class MonsterZoo {
 	//卵は最大9個まで持てる．卵を取得するとeggにtrueが代入され，
 	//移動するたびに,eggDistanceに1.0kmずつ加算される．
 	//3km移動するとランダムでモンスターが孵る
-	double eggDistance[] = new double[9];
-	boolean egg[] = new boolean[9];
+	List<Egg> carryingEggList = new ArrayList<Egg>();
+	// double eggDistance[] = new double[9];
+	// boolean egg[] = new boolean[9];
 
 	//ユーザがGetしたモンスター一覧
 	List<Monster> caughtMonsterList = new ArrayList<Monster>();
 
 	//モンスター図鑑．モンスターの名前とレア度(0.0~9.0)がそれぞれの配列に保存されている
 	//レア度が高いほうが捕まえにくい
-	private MonsterList monsterList;
+	// private MonsterList monsterList = new MonsterList();
 
-	public MonsterZoo() {
-		this.monsterList = new MonsterList();
-	}
-
-	public void turn() {
-			this.move();
-			System.out.println("手持ちのボールは"+this.getBalls()+"個，フルーツは"+this.getFruits()+"個");
-			System.out.println(this.getDistance()+"km歩いた．");
-	}
 	//呼び出すと1km distanceが増える
 	public void move(){
 		this.distance++;
-		for(int i=0;i<this.egg.length;i++){//卵は移動距離が進むと孵化するため，何km移動したかを更新する
-			if(this.egg[i]==true){
-				this.eggDistance[i]++;
-			}
-		}
+		this.turn();
+		carryingEggList.forEach(e -> e.move());
+		// for(int i=0;i<this.egg.length;i++){//卵は移動距離が進むと孵化するため，何km移動したかを更新する
+		// 	if(this.egg[i]==true){
+		// 		this.eggDistance[i]++;
+		// 	}
+		// }
 
 		int flg1 = (int)(Math.random()*10);//0,1の場合はズーstation，7~9の場合はモンスター
 		if(flg1<=1){
@@ -49,16 +43,19 @@ public class MonsterZoo {
 			this.fruits=this.fruits+f;
 			if(e>=1){//卵を1つ以上Getしたら
 				//egg[]に10個以上卵がない場合は新しい卵データをセットする
-				for(int i=0;i<this.eggDistance.length;i++){
-					if(this.egg[i]==false){
-						this.egg[i]=true;
-						this.eggDistance[i]=0.0;
-						break;
-					}
+				if(carryingEggList.size()<10){
+					carryingEggList.add(new Egg());
 				}
+				// for(int i=0;i<this.eggDistance.length;i++){
+				// 	if(this.egg[i]==false){
+				// 		this.egg[i]=true;
+				// 		this.eggDistance[i]=0.0;
+				// 		break;
+				// 	}
+				// }
 			}
 		}else if(flg1>=7){
-			Monster appearedMonster = monsterList.randomFromMonsterList();
+			Monster appearedMonster = MonsterList.randomFromMonsterList();
 			System.out.println(appearedMonster.name+"が現れた！");
 			for(int i=0;i<3&&this.balls>0;i++){//捕まえる or 3回ボールを投げるまで繰り返す
 				int r = (int)(6*Math.random());//0~5までの数字をランダムに返す
@@ -78,16 +75,24 @@ public class MonsterZoo {
 				}
 			}
 		}
-		for(int i=0;i<this.egg.length;i++){
-			if(this.egg[i]==true&&this.eggDistance[i]>=3){
-				System.out.println("卵が孵った！");
-				Monster birthMonster = monsterList.randomFromMonsterList();
-				System.out.println(birthMonster.name+"が産まれた！");
-				caughtMonsterList.add(birthMonster);
-				this.egg[i]=false;
-				this.eggDistance[i]=0.0;
-			}
-		}
+		carryingEggList.stream()
+						.filter(i -> i.extrication_decision())
+						.forEach(i -> caughtMonsterList.add(i.birth()));
+		// for(int i=0;i<this.egg.length;i++){
+		// 	if(this.egg[i]==true&&this.eggDistance[i]>=3){
+		// 		System.out.println("卵が孵った！");
+		// 		Monster birthMonster = monsterList.randomFromMonsterList();
+		// 		System.out.println(birthMonster.name+"が産まれた！");
+		// 		caughtMonsterList.add(birthMonster);
+		// 		this.egg[i]=false;
+		// 		this.eggDistance[i]=0.0;
+		// 	}
+		// }
+	}
+
+	public void turn() {
+		System.out.println("手持ちのボールは"+this.getBalls()+"個，フルーツは"+this.getFruits()+"個");
+		System.out.println(this.getDistance()+"km歩いた．");
 	}
 
 	public void result() {

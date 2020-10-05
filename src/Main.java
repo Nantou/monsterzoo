@@ -11,7 +11,7 @@ public class Main {
 			try {
 				Thread.sleep(1000);
 				if(pz.getBalls()>0){
-					pz.turn();
+					pz.move();
 				}else{
 					break;
 				}
