@@ -1,4 +1,5 @@
 public class Egg {
+    private static final Double DEFAULT_DISTANCE = 3.0;
     public Distance distance;
 
     public Egg() {
@@ -13,9 +14,9 @@ public class Egg {
         return (this.distance.compareTo(3.0) == 0);
     }
 
-    public Monster birth(MonsterList list) {
-        Monster birthMonster = list.randomFromMonsterList();
-        System.out.println("卵が孵った！\n" + birthMonster.name + "が産まれた！");
+    public Monster birth() {
+        Monster birthMonster = MonsterList.randomFromMonsterList();
+        birthMonster.birthMessage();
         return birthMonster;
     }
 }

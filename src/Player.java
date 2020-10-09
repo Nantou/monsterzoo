@@ -1,12 +1,13 @@
 import static java.lang.System.out;
 import java.util.List;
 import java.util.ArrayList;
+import java.lang.Math;
 
 public class Player {
 
     private static final Integer MAX_CARRYING_EGG = 10;
     private static final Integer DEFAULT_BALLS = 10;
-    private static final Integer DEFAULT_FRUITS = 10;
+    private static final Integer DEFAULT_FRUITS = 0;
 
 	private Integer balls = DEFAULT_BALLS;//モンスターを捕まえられるボールの数
 	private Integer fruits= DEFAULT_FRUITS;//ぶつけるとモンスターが捕まえやすくなるフルーツ
@@ -14,14 +15,14 @@ public class Player {
 	//卵は最大9個まで持てる．卵を取得するとeggにtrueが代入され，
 	//移動するたびに,eggDistanceに1.0kmずつ加算される．
 	//3km移動するとランダムでモンスターが孵る
-	private List<Egg> carryingEggList = new ArrayList<Egg>();
+	private static List<Egg> carryingEggList = new ArrayList<Egg>();
 
 	//ユーザがGetしたモンスター一覧
-    private List<Monster> caughtMonsterList = new ArrayList<Monster>();
+    private static List<Monster> caughtMonsterList = new ArrayList<Monster>();
 
     //モンスター図鑑．モンスターの名前とレア度(0.0~9.0)がそれぞれの配列に保存されている
 	//レア度が高いほうが捕まえにくい
-    private MonsterList monsterList = new MonsterList();
+    private  static MonsterList monsterList = new MonsterList();
 
     public void startProcess() {
         this.updateEggList();
@@ -42,25 +43,37 @@ public class Player {
         }
     }
 
-    public Integer getBalls() {
-        return this.balls;
+    public boolean hasBalls() {
+        return (this.balls > 0);
     }
 
-    public Integer getFruits() {
-        return this.fruits;
+    public boolean hasFruits() {
+        return (this.fruits > 0);
     }
 
     public void addBalls(Integer addBalls) {
+        out.print("ボールを"+addBalls+"個，");
         this.balls += addBalls;
     }
 
     public void addFruits(Integer addFruits) {
+        out.print("フルーツを"+addFruits+"個，");
         this.fruits += addFruits;
+    }
+
+    public Integer canThrowBalls() {
+        return Math.min(this.balls,new Integer(3));
+    }
+
+    public void throwBall(Monster appearedMonster) {
+        out.println(appearedMonster.toString()+"にボールを投げた");
+        this.useBall();
     }
 
     public void useBall() {
         this.balls -= 1;
     }
+
 
     public void useFruit() {
         this.fruits -= 1;
@@ -68,7 +81,17 @@ public class Player {
 
     public void printGetMonsters() {
         this.caughtMonsterList.stream()
-        .forEach(m -> out.println(m.name+"を捕まえた．"));
+            .forEach(m -> m.resultMessage());
+    }
+
+    public Rare generatePlayerRare() {
+        Rare playerRare = new Rare();
+        if(this.hasFruits()) playerRare.useFruit(this);
+        return playerRare;
+    }
+
+    public boolean isBallEmpty() {
+        return (this.balls == 0);
     }
 
     private void outputBagItems() {
@@ -87,10 +110,7 @@ public class Player {
     private void hatchingVerificationInList(){
 		this.carryingEggList.stream()
 			.filter(i -> i.extrication_decision())
-            .forEach(i -> {
-                Monster birthMonster = i.birth(this.monsterList);
-                this.addCaughtMonsterList(birthMonster);
-            });
+            .forEach(i -> this.addCaughtMonsterList(i.birth()));
     }
 
     private void removeCarryingEggList() {

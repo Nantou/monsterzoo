@@ -7,7 +7,7 @@ public class Main {
 	public static void main(String[] args) {
 		//1000ミリ秒（1秒）ずつ止まりながらpz.move()を呼び出し続ける
 		//手持ちのボールが無くなったら終了
-		while( monsterZoo.endDecision() ) turn();
+		while( monsterZoo.continuation() ) turn();
 		monsterZoo.result();
 	}
 

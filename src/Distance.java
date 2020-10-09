@@ -16,7 +16,7 @@ public class Distance implements Comparable<Distance> {
         return Double.compare(this.distance,otherDistance);
     }
 
-    public Double getDistance() {
+    public Double toDouble() {
         return this.distance;
     }
 
