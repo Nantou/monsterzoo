@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class MonsterZoo {
 
-	private Double distance = 0.0;//歩いた距離
+	private Distance distance = new Distance(0.0);//歩いた距離
 	private Integer balls = 10;//モンスターを捕まえられるボールの数
 	private Integer fruits=0;//ぶつけるとモンスターが捕まえやすくなるフルーツ
 
@@ -11,8 +11,6 @@ public class MonsterZoo {
 	//移動するたびに,eggDistanceに1.0kmずつ加算される．
 	//3km移動するとランダムでモンスターが孵る
 	List<Egg> carryingEggList = new ArrayList<Egg>();
-	// double eggDistance[] = new double[9];
-	// boolean egg[] = new boolean[9];
 
 	//ユーザがGetしたモンスター一覧
 	List<Monster> caughtMonsterList = new ArrayList<Monster>();
@@ -23,14 +21,9 @@ public class MonsterZoo {
 
 	//呼び出すと1km distanceが増える
 	public void move(){
-		this.distance++;
+		this.distance.add();
 		this.turn();
 		carryingEggList.forEach(e -> e.move());
-		// for(int i=0;i<this.egg.length;i++){//卵は移動距離が進むと孵化するため，何km移動したかを更新する
-		// 	if(this.egg[i]==true){
-		// 		this.eggDistance[i]++;
-		// 	}
-		// }
 
 		int flg1 = (int)(Math.random()*10);//0,1の場合はズーstation，7~9の場合はモンスター
 		if(flg1<=1){
@@ -46,13 +39,6 @@ public class MonsterZoo {
 				if(carryingEggList.size()<10){
 					carryingEggList.add(new Egg());
 				}
-				// for(int i=0;i<this.eggDistance.length;i++){
-				// 	if(this.egg[i]==false){
-				// 		this.egg[i]=true;
-				// 		this.eggDistance[i]=0.0;
-				// 		break;
-				// 	}
-				// }
 			}
 		}else if(flg1>=7){
 			Monster appearedMonster = MonsterList.randomFromMonsterList();
@@ -79,30 +65,16 @@ public class MonsterZoo {
 			.filter(i -> i.extrication_decision())
 			.forEach(i -> caughtMonsterList.add(i.birth(this.monsterList)));
 		carryingEggList.removeIf(i -> i.extrication_decision());
-		// for(int i=0;i<this.egg.length;i++){
-		// 	if(this.egg[i]==true&&this.eggDistance[i]>=3){
-		// 		System.out.println("卵が孵った！");
-		// 		Monster birthMonster = monsterList.randomFromMonsterList();
-		// 		System.out.println(birthMonster.name+"が産まれた！");
-		// 		caughtMonsterList.add(birthMonster);
-		// 		this.egg[i]=false;
-		// 		this.eggDistance[i]=0.0;
-		// 	}
-		// }
 	}
 
 	public void turn() {
 		System.out.println("手持ちのボールは"+this.getBalls()+"個，フルーツは"+this.getFruits()+"個");
-		System.out.println(this.getDistance()+"km歩いた．");
+		System.out.println(this.distance.getDistance()+"km歩いた．");
 	}
 
 	public void result() {
 		System.out.println("ボールがなくなった！");
 		caughtMonsterList.stream().forEach(m -> System.out.println(m.name+"を捕まえた．"));
-	}
-
-	public double getDistance() {
-		return distance;
 	}
 
 	public int getBalls() {

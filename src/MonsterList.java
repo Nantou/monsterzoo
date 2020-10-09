@@ -32,7 +32,7 @@ public final class MonsterList {
 
     public static Monster randomFromMonsterList() {
         Random random = new Random();
-        Integer index = random.nextInt(monsterList.size());
+        Integer index = random.nextInt(this.monsterList.size());
         return monsterList.get(index);
     }
 

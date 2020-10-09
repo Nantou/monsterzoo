@@ -1,16 +1,16 @@
 public class Egg {
-    public Double distance;
+    public Distance distance;
 
     public Egg() {
-        this.distance = 3.0;
+        this.distance = new Distance(3.0);
     }
 
     public void move() {
-        this.distance += 1.0;
+        this.distance.add();
     }
 
     public boolean extrication_decision() {
-        return (this.distance == 3.0);
+        return (this.distance.compareTo(3.0) == 0);
     }
 
     public Monster birth(MonsterList list) {
