@@ -19,7 +19,7 @@ public class MonsterZoo {
 
 	//モンスター図鑑．モンスターの名前とレア度(0.0~9.0)がそれぞれの配列に保存されている
 	//レア度が高いほうが捕まえにくい
-	// private MonsterList monsterList = new MonsterList();
+	private MonsterList monsterList = new MonsterList();
 
 	//呼び出すと1km distanceが増える
 	public void move(){
@@ -76,8 +76,9 @@ public class MonsterZoo {
 			}
 		}
 		carryingEggList.stream()
-						.filter(i -> i.extrication_decision())
-						.forEach(i -> caughtMonsterList.add(i.birth()));
+			.filter(i -> i.extrication_decision())
+			.forEach(i -> caughtMonsterList.add(i.birth(this.monsterList)));
+		carryingEggList.removeIf(i -> i.extrication_decision());
 		// for(int i=0;i<this.egg.length;i++){
 		// 	if(this.egg[i]==true&&this.eggDistance[i]>=3){
 		// 		System.out.println("卵が孵った！");

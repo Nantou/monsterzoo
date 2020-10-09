@@ -13,8 +13,8 @@ public class Egg {
         return (this.distance == 3.0);
     }
 
-    public Monster birth() {
-        Monster birthMonster = MonsterList.randomFromMonsterList();
+    public Monster birth(MonsterList list) {
+        Monster birthMonster = list.randomFromMonsterList();
         System.out.println("卵が孵った！\n" + birthMonster.name + "が産まれた！");
         return birthMonster;
     }
