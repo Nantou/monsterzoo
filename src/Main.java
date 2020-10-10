@@ -1,7 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main {
+public class Main {	
+	//モンスター図鑑．モンスターの名前とレア度(0.0~9.0)がそれぞれの配列に保存されている
+	//レア度が高いほうが捕まえにくい
 	static MonsterZoo monsterZoo = new MonsterZoo();
 
 	public static void main(String[] args) {

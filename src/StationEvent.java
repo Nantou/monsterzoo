@@ -16,13 +16,13 @@ public class StationEvent implements Event{
     }
 
     private void itemGetEvent(Player player) {
-        player.addBalls(generateRandomItemWithin(2));
-        player.addFruits(generateRandomItemWithin(1));
+        player.addBalls(generateRandomItemWithin(3));
+        player.addFruits(generateRandomItemWithin(2));
         this.eggGetDecision(player);
     }
 
     private void eggGetDecision(Player player){
-        Integer egg = generateRandomItemWithin(1);
+        Integer egg = generateRandomItemWithin(2);
         out.println("卵を"+egg+"個Getした！");
         if(egg >= GET_EGG) player.addCarryingEggList();
     }
